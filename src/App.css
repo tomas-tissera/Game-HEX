@@ -1,0 +1,7 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Alinear verticalmente */
+    align-items: center;    /* Alinear horizontalmente */
+    min-height: 100vh;      /* Asegura que el contenedor ocupe toda la altura de la ventana */
+  }

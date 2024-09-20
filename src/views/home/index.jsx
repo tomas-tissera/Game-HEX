@@ -1,11 +1,9 @@
-
+import Game from "../../components/game";
 const Home = () => {
    
     return (
         <>
-           <div>
-                homes
-            </div>
+            <Game/>
         </>
 )};
 export default Home;

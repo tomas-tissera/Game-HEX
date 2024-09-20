@@ -1,0 +1,10 @@
+/* FondoInteractivo.module.css */
+.fondoContainer {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Asegura que el fondo esté detrás del contenido */
+  background: linear-gradient(180deg, #0B0033 0%, #002F66 100%);
+}

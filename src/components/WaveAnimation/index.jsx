@@ -1,23 +1,56 @@
+// FondoInteractivo.js
 import React from 'react';
-import styles from './WaveAnimation.module.css';
+import Particles from 'react-tsparticles';
+import { loadFull } from 'tsparticles';
+import styles from "./FondoInteractivo.module.css"
 
-const WaveAnimation = () => {
+const FondoInteractivo = () => {
+  const particlesInit = async (main) => {
+    // Load tsparticles package
+    await loadFull(main);
+  };
+
+  const particlesOptions = {
+    background: {
+      color: {
+        value: "#000D26", // Color azul oscuro con tinte violeta
+      },
+    },
+    particles: {
+      number: {
+        value: 100,
+        density: {
+          enable: true,
+          value_area: 800,
+        },
+      },
+      color: {
+        value: "#ffffff", // Color blanco para los copos de nieve
+      },
+      opacity: {
+        value: 0.7,
+      },
+      size: {
+        value: 3,
+        random: true,
+      },
+      move: {
+        direction: "bottom",
+        enable: true,
+        speed: 2,
+      },
+    },
+  };
+
   return (
-    <div className={styles.waveContainer}>
-      <svg className={styles.svgWave} viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path
-          className={styles.wave1}
-          d="M0,100 C300,200 900,0 1200,100 L1200,200 L0,200 Z"
-          fill="rgba(10, 10, 10, 0.8)"
-        ></path>
-        <path
-          className={styles.wave2}
-          d="M0,150 C400,250 800,50 1200,150 L1200,200 L0,200 Z"
-          fill="rgba(30, 30, 30, 0.5)"
-        ></path>
-      </svg>
+    <div className={styles.fondoContainer}>
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={particlesOptions}
+      />
     </div>
   );
 };
 
-export default WaveAnimation;
+export default FondoInteractivo;

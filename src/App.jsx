@@ -6,8 +6,10 @@ function App() {
   return (
     <>
     
-      <WaveAnimation/>
-      <Router/>
+    <div className="app-container">
+      <WaveAnimation />
+      <Router />
+    </div>
     </>
   )
   
