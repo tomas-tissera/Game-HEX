@@ -4,7 +4,9 @@ import styles from "./Alatorio.module.css";
 const Alatorio = () => {
     const [bgColor, setBgColor] = useState(() => {
         // Al iniciar, obtén el color almacenado en localStorage (si existe)
+        
         return localStorage.getItem("bgColor") || "#ffffff"; // Color blanco por defecto
+        
     });
 
     // Función para generar un color aleatorio en formato hexadecimal

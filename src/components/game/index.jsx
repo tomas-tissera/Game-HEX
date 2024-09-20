@@ -1,5 +1,6 @@
 import styles from "./game.module.css"
 import Alatorio from "../alatorio";
+import Ingresar from "../ingresa";
 const Game = () => {
    
     return (
@@ -10,6 +11,9 @@ const Game = () => {
                     <h2>Bienvenido!</h2>
                     <div>
                         <Alatorio/>
+                    </div>
+                    <div>
+                        <Ingresar/>
                     </div>
                 </div>
                 
