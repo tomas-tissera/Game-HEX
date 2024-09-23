@@ -31,4 +31,21 @@
   .button:hover {
     background-color: #0056b3;
   }
+  /* Media Queries para celulares */
+@media (max-width: 600px) {
+  .container {
+      padding-bottom: 10px; /* Ajustar padding en móviles */
+  }
   
+  .contColor {
+      width: 150px; /* Reducir ancho para pantallas pequeñas */
+      height: 150px; /* Reducir alto para pantallas pequeñas */
+      font-size: 14px; /* Ajustar tamaño de fuente */
+      margin-bottom: 15px; /* Reducir margen inferior */
+  }
+  
+  .button {
+      padding: 8px 16px; /* Ajustar tamaño del botón */
+      font-size: 14px; /* Ajustar tamaño de fuente del botón */
+  }
+}

@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from "react";
 import styles from "./Ingresar.module.css";
 import Confetti from "react-confetti";
+import Swal from "sweetalert2";
 
 const Ingresar = () => {
-  // Estados para cada input
   const [values, setValues] = useState({
     input0: "#",
     input1: "",
@@ -16,13 +16,19 @@ const Ingresar = () => {
 
   const [matches, setMatches] = useState([false, false, false, false, false, false]);
   const [showConfetti, setShowConfetti] = useState(false);
-
-  // Referencias para cada input
+  const [isCounting, setIsCounting] = useState(false);
+  const [time, setTime] = useState(0);
   const inputRefs = Array.from({ length: 7 }, () => useRef(null));
 
   useEffect(() => {
-    console.log("Valores actualizados: ", values);
-  }, [values]);
+    let timer;
+    if (isCounting) {
+      timer = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isCounting]);
 
   const handleCheck = () => {
     const storedColor = localStorage.getItem("bgColor") || "#1384b8";
@@ -34,25 +40,71 @@ const Ingresar = () => {
 
     setMatches((prevMatches) => {
       const updatedMatches = prevMatches.map((match, index) => match || newMatches[index]);
-      // Si todas las coincidencias son verdaderas, muestra confetti y limpia los inputs
       if (updatedMatches.every(Boolean)) {
         setShowConfetti(true);
+        setIsCounting(false); // Detener el contador
         setTimeout(() => {
-          setValues({
-            input0: "#",
-            input1: "",
-            input2: "",
-            input3: "",
-            input4: "",
-            input5: "",
-            input6: ""
-          });
-          setMatches([false, false, false, false, false, false]);
-          setShowConfetti(false); // Oculta el confetti después de un tiempo
-        }, 3000); // Muestra confetti por 3 segundos
+          setShowConfetti(false); // Ocultar el confetti después de 15 segundos
+        }, 15000); // Duración máxima del confetti
+        showCompletionAlert(); // Mostrar la alerta personalizada
       }
       return updatedMatches;
     });
+  };
+
+const showCompletionAlert = () => {
+  Swal.fire({
+    title: '¡Coincidencia!',
+    text: `Tardaste ${time} segundos.`,
+    icon: 'success',
+    showCancelButton: true,
+    confirmButtonText: 'Jugar de nuevo',
+    cancelButtonText: 'Compartir tiempo',
+    backdrop: true,
+    onClose: () => {
+      resetInputs(); // Limpiar los inputs cuando se cierra la alerta
+      setShowConfetti(false); // Ocultar el confetti
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      resetInputs(); // Reiniciar juego
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      shareTime(); // Compartir tiempo
+    }
+  });
+};
+
+
+  const shareTime = () => {
+    const shareMessage = `¡He encontrado el color en ${time} segundos! ¿Puedes hacerlo mejor?`;
+    const url = window.location.href; // URL de la página
+
+    // Lógica para compartir en diferentes redes
+    const shareOptions = [
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(url)}`,
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`
+    ];
+
+    // Puedes mostrar opciones o abrir un nuevo ventana para compartir
+    shareOptions.forEach((link) => {
+      window.open(link, '_blank');
+    });
+  };
+
+  const resetInputs = () => {
+    setValues({
+      input0: "#",
+      input1: "",
+      input2: "",
+      input3: "",
+      input4: "",
+      input5: "",
+      input6: ""
+    });
+    setMatches([false, false, false, false, false, false]);
+    setTime(0); // Reiniciar el tiempo
+    setIsCounting(false); // Detener el conteo
   };
 
   const handleChange = (e, nextInputRef, prevInputRef, inputKey) => {
@@ -64,14 +116,17 @@ const Ingresar = () => {
     }));
 
     if (newValue.length === e.target.maxLength) {
-      // Avanzar al siguiente input si se completó
       if (nextInputRef && nextInputRef.current) {
         nextInputRef.current.focus();
       }
     } else if (newValue === "" && prevInputRef && prevInputRef.current) {
-      // Retroceder al input anterior si se borró
       prevInputRef.current.focus();
     }
+  };
+
+  const startGame = () => {
+    resetInputs(); // Reiniciar los inputs
+    setIsCounting(true); // Iniciar el conteo
   };
 
   const getContainerBackgroundColor = () => {
@@ -90,12 +145,12 @@ const Ingresar = () => {
             maxLength={1}
             value={values[`input${index}`]}
             onChange={(e) => handleChange(
-              e, 
-              inputRefs[index + 1] || null, 
-              inputRefs[index - 1] || null, 
+              e,
+              inputRefs[index + 1] || null,
+              inputRefs[index - 1] || null,
               `input${index}`
             )}
-            style={{ 
+            style={{
               backgroundColor: matches[index] ? 'green' : 'transparent',
               color: matches[index] ? 'white' : 'black'
             }}
@@ -104,10 +159,16 @@ const Ingresar = () => {
         ))}
       </div>
       <div className={styles.conBtn}>
-        <button className={styles.button} onClick={handleCheck}>
+        <button className={styles.button} onClick={() => {
+          if (!isCounting) {
+            startGame(); // Iniciar el juego y el contador solo la primera vez
+          }
+          handleCheck(); // Siempre chequear
+        }}>
           Chequear
         </button>
       </div>
+      {isCounting && <div>Tiempo: {time} segundos</div>}
     </div>
   );
 };

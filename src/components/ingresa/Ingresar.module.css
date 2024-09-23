@@ -36,3 +36,28 @@
     justify-content: center;
     margin: 15px;
   }
+  /* Media Queries para celulares */
+@media (max-width: 600px) {
+  .contIngresar {
+      flex-direction:row; /* Cambiar a columna en móviles */
+      align-items: center; /* Centrar los elementos */
+      padding: 5px; /* Ajustar padding en móviles */
+      flex-wrap: wrap;
+      justify-content: center;
+  }
+  
+  input {
+      width: 40px; /* Reducir ancho de los inputs */
+      height: 40px; /* Reducir alto de los inputs */
+      font-size: 20px; /* Ajustar tamaño de texto */
+  }
+  
+  .button {
+      padding: 8px 16px; /* Ajustar tamaño del botón */
+      font-size: 14px; /* Ajustar tamaño de fuente del botón */
+  }
+  
+  .conBtn {
+      margin: 10px; /* Ajustar margen en móviles */
+  }
+}

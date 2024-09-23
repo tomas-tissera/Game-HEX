@@ -1,5 +1,5 @@
 .contPadre{
-    background-color: rgb(202, 202, 202);
+    background-color: rgb(255, 255, 255);
     height: 500px;
     width: 60%;
     display: flex;
@@ -11,4 +11,16 @@
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+@media (max-width: 600px) {
+    .contPadre {
+        width: 90%; /* Aumentar el ancho para móviles */
+        height: auto; /* Ajustar la altura automáticamente */
+        flex-direction: column; /* Cambiar a columna para mejor visualización */
+        padding: 20px; /* Añadir padding para evitar que el contenido esté pegado a los bordes */
+    }
+
+    .contElementos {
+        text-align: left; /* Alinear el texto a la izquierda en móviles */
+    }
 }
