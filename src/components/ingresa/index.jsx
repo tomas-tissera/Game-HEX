@@ -55,7 +55,7 @@ const Ingresar = () => {
     });
   };
 
-  const handleChange = (e, nextInputRef, inputKey) => {
+  const handleChange = (e, nextInputRef, prevInputRef, inputKey) => {
     const newValue = e.target.value;
 
     setValues((prevValues) => ({
@@ -64,9 +64,13 @@ const Ingresar = () => {
     }));
 
     if (newValue.length === e.target.maxLength) {
+      // Avanzar al siguiente input si se completó
       if (nextInputRef && nextInputRef.current) {
         nextInputRef.current.focus();
       }
+    } else if (newValue === "" && prevInputRef && prevInputRef.current) {
+      // Retroceder al input anterior si se borró
+      prevInputRef.current.focus();
     }
   };
 
@@ -85,7 +89,12 @@ const Ingresar = () => {
             ref={ref}
             maxLength={1}
             value={values[`input${index}`]}
-            onChange={(e) => handleChange(e, inputRefs[index + 1] || null, `input${index}`)}
+            onChange={(e) => handleChange(
+              e, 
+              inputRefs[index + 1] || null, 
+              inputRefs[index - 1] || null, 
+              `input${index}`
+            )}
             style={{ 
               backgroundColor: matches[index] ? 'green' : 'transparent',
               color: matches[index] ? 'white' : 'black'

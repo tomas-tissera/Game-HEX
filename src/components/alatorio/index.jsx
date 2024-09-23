@@ -29,7 +29,6 @@ const Alatorio = () => {
                 className={styles.contColor}
                 style={{ backgroundColor: bgColor }}
             >
-                Alatorio
             </div>
             <button className={styles.button} onClick={handleGenerateColor}>
                 Generar
