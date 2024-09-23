@@ -75,22 +75,31 @@ const showCompletionAlert = () => {
 };
 
 
-  const shareTime = () => {
-    const shareMessage = `¡He encontrado el color en ${time} segundos! ¿Puedes hacerlo mejor?`;
-    const url = window.location.href; // URL de la página
+const shareTime = () => {
+  const shareMessage = `¡He encontrado el color en ${time} segundos! ¿Puedes hacerlo mejor?`; // Mensaje personalizado
+  const url = window.location.href; // URL de la página actual
 
-    // Lógica para compartir en diferentes redes
-    const shareOptions = [
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(url)}`,
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`
-    ];
+  const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(url)}`;
+  const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(shareMessage)}`;
 
-    // Puedes mostrar opciones o abrir un nuevo ventana para compartir
-    shareOptions.forEach((link) => {
-      window.open(link, '_blank');
-    });
-  };
+  // Mostrar opciones para compartir
+  Swal.fire({
+    title: 'Compartir tu tiempo',
+    text: 'Elige la red social donde quieras compartir:',
+    icon: 'info',
+    showCancelButton: true,
+    confirmButtonText: 'Twitter',
+    cancelButtonText: 'LinkedIn',
+    backdrop: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.open(twitterShareUrl, '_blank'); // Abrir en Twitter
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      window.open(linkedInShareUrl, '_blank'); // Abrir en LinkedIn
+    }
+  });
+};
+
 
   const resetInputs = () => {
     setValues({
